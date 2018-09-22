@@ -72,19 +72,19 @@ prediction = svc_l.predict(X_test)
 print("Accuracy with Linear SVM:", accuracy_score(y_test, prediction))
 
 # Classification using RBF SVM  
-svc_rbf = SVC(kernel = "rbf", gamma= 1, C = 2)
+svc_rbf = SVC(kernel = "rbf", gamma= 1, C = 1)
 svc_rbf = svc_rbf.fit(X_train,y_train)
 prediction = svc_rbf.predict(X_test)
 print("Accuracy with RBF SVM:",accuracy_score(y_test, prediction))
 
 # Classification using Random Forest Classifier
-rfc = RF(max_depth= 5, n_estimators= 10, max_features= 1)
+rfc = RF(max_depth= 5, n_estimators = 10, max_features= 'auto')
 rfc = rfc.fit(X_train,y_train)
 prediction = rfc.predict(X_test)
 print("Accuracy with Random Forest Classifier:",accuracy_score(y_test, prediction))
 
 # Classification using logistic regression
-logreg = LR(C = 2)
+logreg = LR(C = 1)
 logreg = logreg.fit(X_train,y_train)
 prediction = logreg.predict(X_test)
 print("Accuracy with Logistic Regression:",accuracy_score(y_test, prediction))
