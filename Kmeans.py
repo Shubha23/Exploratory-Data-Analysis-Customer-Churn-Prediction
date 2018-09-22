@@ -50,10 +50,10 @@ X = preprocessing.normalize(X, norm = "l2")
 #Assign number of clusters required. Here, 2 since only two classes.
 n_clusters = 2
 
-kmeans = KMeans(n_clusters = n_clusters, random_state = None, n_init = 10,
-                tol = 0.001, max_iter = 5000, init = 'k-means++')
-kmeans.fit(input_file, y)
-predicted = (kmeans.fit_predict(input_file))
+kmeans = KMeans(n_clusters = n_clusters, random_state = None,
+                tol = 0.001, init = 'k-means++')
+kmeans.fit(X, y)
+predicted = (kmeans.fit_predict(X))
 
 # Compute confusion matrix and accuracy.
 print(confusion_matrix(y, predicted))
@@ -61,7 +61,7 @@ print(" ")
 print(accuracy_score(y, predicted))
 
 # Plot to see clusters and their centers.
-plt.scatter(input_file[:, 0], input_file[:, 1], c = predicted, s = 20)
+plt.scatter(X[:, 0], X[:, 1], c = predicted, s = 20)
 centers = kmeans.cluster_centers_
 plt.scatter(centers[:, 0], centers[:, 1], c ='red', s= 30, alpha=0.5);
 plt.show()
