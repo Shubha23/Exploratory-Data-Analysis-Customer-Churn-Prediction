@@ -45,7 +45,7 @@ y = data.Churn.values     # Target feature
 X = data.drop(["Churn"],axis=1)
 
 # Normalize data 
-input_file = preprocessing.normalize(X, norm = "l2")
+X = preprocessing.normalize(X, norm = "l2")
 
 #Assign number of clusters required. Here, 2 since only two classes.
 n_clusters = 2
