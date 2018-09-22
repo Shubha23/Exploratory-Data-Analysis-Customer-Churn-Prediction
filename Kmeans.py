@@ -9,9 +9,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import preprocessing 
-from sklearn.feature_selection import SelectKBest, VarianceThreshold as VT
-from sklearn.feature_selection import chi2
-from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.cluster import KMeans
 
 filename = "./Telco-Customer-Churn.csv"
 
@@ -22,7 +20,7 @@ data.head()
 data.info()
 data.describe()
 
-# Find if there are any missing values.
+# Check if there are any missing values.
 print("Missing values:",data.isnull().sum())
 
 data.drop(['customerID'], axis = 1, inplace = True)
