@@ -1,5 +1,8 @@
 # Will-Customer-Churn?
-Application of K-means clustering and prediction of customer churn by Logistic Regression &amp; SVM.
+Done - 
+1. Data cleansing, preprocessing, visualization and statistical analysis.
+2. Application of K-means clustering to classify customers into one of the two clusters (churned/not-churned).
+3. Prediction of whether a customer will churn by Logistic Regression, SVM-Linear, SVM-RBF and Random Forest.
 ******************************************
 Project Description -
 ******************************************
