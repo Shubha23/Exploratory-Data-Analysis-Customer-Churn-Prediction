@@ -2,7 +2,7 @@
 """
 Created on Mon Oct 16 15:45:29 2017
 @author: Shubha Mishra
-Algorithms applied : SVM - Linear and RBF, Random Forest and Logistic Regression.
+Algorithms applied : Neural Networks Multi-Layer Perceptron, SVM - Linear and RBF, Random Forest and Logistic Regression.
 """
 import numpy as np
 from sklearn.metrics import accuracy_score
@@ -13,6 +13,7 @@ from sklearn import preprocessing
 from sklearn.ensemble import RandomForestClassifier as RF
 from sklearn.linear_model import LogisticRegression as LR
 from sklearn.svm import SVC 
+from sklearn.neural_network import MLPClassifier
 
 filename = "./Telco-Customer-Churn.csv"
 
@@ -88,5 +89,23 @@ logreg = LR(C = 1)
 logreg = logreg.fit(X_train,y_train)
 prediction = logreg.predict(X_test)
 print("Accuracy with Logistic Regression:",accuracy_score(y_test, prediction))
+
+# Since Multi-layer perceptron is senstitive to scaled features, standardize the data first
+from sklearn.preprocessing import StandardScaler  
+scaler = StandardScaler()  
+# Fit only on training data
+scaler.fit(X_train)  
+X_train = scaler.transform(X_train)  
+# Apply same transformation to test data
+X_test = scaler.transform(X_test)
+
+# Classification using Multi-layer perception 
+ann = MLPClassifier(solver='lbfgs', alpha = 1e-5,
+                    hidden_layer_sizes = (5, 2), random_state = 1)
+
+ann = ann.fit(X_train, y_train)
+prediction = ann.predict(X_test)
+print("F1-score using Neural networks MLP:", f1_score(y_test, prediction))
+print("Accuracy with Neural networks MLP:",accuracy_score(y_test, prediction))
 
 
