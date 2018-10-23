@@ -25,32 +25,38 @@ data.info()
 data.describe()
 
 sizes = data['Churn'].value_counts(sort = False)
-labels = ['Yes', 'No']
+labels = np.unique(data.Churn)
 
 # Visualize the data
-plt.figure(figsize = (12,12))
+plt.figure(figsize = (8,8))
 plt.subplot(212)
 #data['Churn'].value_counts().plot.pie()
 plt.title("Customer churn rate:")
-plt.pie(sizes, labels = labels, autopct='%1.1f%%')
-plt.show()
+plt.pie(sizes, labels = labels, autopct='%1.1f%%')   # Distribution shows about 26% customers churn
 
 # Find if there are any missing values.
-print("Missing values:",data.isnull().sum())
+print("Missing values:",data.isnull().sum())     # No missing data is found, so nothing to do
 
 data.drop(['customerID'], axis = 1, inplace = True)
+# Create dummy variables for categorical features
 data.gender = [1 if x == "Male" else 0 for x in data.gender]
-data.Churn = [1 if x == "Yes" else 0 for x in data.Churn ]
+for col in ('Partner', 'Dependents', 'PhoneService' , 'OnlineSecurity',
+        'OnlineBackup','DeviceProtection', 'TechSupport',
+        'StreamingTV','StreamingMovies','PaperlessBilling',
+        'MultipleLines','Churn'):
+    data[col] = [1 if x == "Yes" else 0 for x in data[col]]
+        
+data.MultipleLines = pd.to_numeric(data.MultipleLines, errors = 'coerce')
 data.TotalCharges = pd.to_numeric(data.TotalCharges, errors = 'coerce')
 
-# See correlation between other features and Churn to find irrelevant features
-data.corr()['Churn'].sort_values()
+# Generate heatmap to visualize correlation between features to find least relevant features
+print(data.corr()['Churn'].sort_values())
+plt.figure(figsize = (12,12))
+sns.heatmap(data.corr())         # Heatmap shows that Gender have very small (<0.01) correlation with Churn status
 
-# Remove irrelevant (low correlation) features
-data.drop(['SeniorCitizen','OnlineSecurity','OnlineBackup','DeviceProtection','TechSupport','PaymentMethod'],axis=1,inplace=True)
+# Remove features with correlation coefficient between +/-0.05 (considering it as threshold)
+data.drop(['gender','PhoneService','MultipleLines','PaymentMethod'],axis=1,inplace=True)
 
-# Delete rows with missing/null values
-data.dropna(inplace = True)
 data = pd.get_dummies(data = data)
 
 # Prepare data for model training and testing input.
@@ -108,4 +114,5 @@ prediction = ann.predict(X_test)
 print("F1-score using Neural networks MLP:", f1_score(y_test, prediction))
 print("Accuracy with Neural networks MLP:",accuracy_score(y_test, prediction))
 
+plt.show()
 
