@@ -5,7 +5,7 @@ Created on Mon Oct 16 15:45:29 2017
 Algorithms applied : Neural Networks Multi-Layer Perceptron, SVM - Linear and RBF, Random Forest and Logistic Regression.
 """
 import numpy as np
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, mean_squared_error as mse
 from sklearn.model_selection import train_test_split
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -37,25 +37,41 @@ plt.pie(sizes, labels = labels, autopct='%1.1f%%')   # Distribution shows about 
 # Find if there are any missing values.
 print("Missing values:",data.isnull().sum())     # No missing data is found, so nothing to do
 
+# Drop CustomerId column as it is not required
 data.drop(['customerID'], axis = 1, inplace = True)
-# Create dummy variables for categorical features
+
+# Now let us work on categorical features. 
 data.gender = [1 if x == "Male" else 0 for x in data.gender]
 for col in ('Partner', 'Dependents', 'PhoneService' , 'OnlineSecurity',
-        'OnlineBackup','DeviceProtection', 'TechSupport',
-        'StreamingTV','StreamingMovies','PaperlessBilling',
-        'MultipleLines','Churn'):
-    data[col] = [1 if x == "Yes" else 0 for x in data[col]]
+        'OnlineBackup','DeviceProtection', 'TechSupport','StreamingTV',
+        'StreamingMovies','PaperlessBilling','MultipleLines','Churn'):
+    data[col] = [1 if x == "Yes" else 0 for x in data[col]]        
+data.head(10)   # See how data looks like now
         
 data.MultipleLines = pd.to_numeric(data.MultipleLines, errors = 'coerce')
 data.TotalCharges = pd.to_numeric(data.TotalCharges, errors = 'coerce')
+
+# Fill the missing values with 0
+data['TotalCharges'] = data['TotalCharges'].fillna(0.0)
+
+# Check for any existing missing values
+print("Missing values now: \n", data.isnull().sum())
 
 # Generate heatmap to visualize correlation between features to find least relevant features
 print(data.corr()['Churn'].sort_values())
 plt.figure(figsize = (12,12))
 sns.heatmap(data.corr())         # Heatmap shows that Gender have very small (<0.01) correlation with Churn status
 
-# Remove features with correlation coefficient between +/-0.05 (considering it as threshold)
-data.drop(['gender','PhoneService','MultipleLines','PaymentMethod'],axis=1,inplace=True)
+# For following features, let us generate bar plots w.r.t. target variable
+for col in ('Partner', 'Dependents', 'PhoneService' , 'OnlineSecurity',
+        'OnlineBackup','DeviceProtection', 'TechSupport','StreamingTV',
+        'StreamingMovies','PaperlessBilling','MultipleLines'):
+    sns.barplot(x = col, y = 'Churn', data = data)
+    plt.show()
+        
+# Generate pairplots for high correlation features.
+highCorrCols = ['MonthlyCharges','TotalCharges','tenure', 'Churn']
+sns.pairplot(data[highCorrCols], hue = 'Churn')
 
 data = pd.get_dummies(data = data)
 
@@ -71,32 +87,36 @@ X = preprocessing.normalize(X, norm = "l2")
 # Split the data into training and testing data
 X_train, X_test, y_train, y_test  = train_test_split(X, y, test_size = 0.2, random_state=1)
 
-# Classification using Linear SVM
-svc_l = SVC(kernel="linear", C = 0.025)
-svc_l = svc_l.fit(X_train,y_train)
-prediction = svc_l.predict(X_test)
-#print("3. Linear SVM ", prediction)
-print("Accuracy with Linear SVM:", accuracy_score(y_test, prediction))
-
 # Classification using RBF SVM  
-svc_rbf = SVC(kernel = "rbf", gamma= 1, C = 1)
+svc_rbf = SVC(kernel = "rbf")
 svc_rbf = svc_rbf.fit(X_train,y_train)
 prediction = svc_rbf.predict(X_test)
-print("Accuracy with RBF SVM:",accuracy_score(y_test, prediction))
+print("Mean-squared error using SVM RBF:", mse(y_test, prediction))
+print("Accuracy with SVM RBF:",accuracy_score(y_test, prediction))
 
 # Classification using Random Forest Classifier
-rfc = RF(max_depth= 5, n_estimators = 10, max_features= 'auto')
+rfc = RF(max_depth= 5, n_estimators= 10, max_features= 'auto')
 rfc = rfc.fit(X_train,y_train)
 prediction = rfc.predict(X_test)
+print("Mean-squared error using Random Forest Classifier:", mse(y_test, prediction))
 print("Accuracy with Random Forest Classifier:",accuracy_score(y_test, prediction))
 
-# Classification using logistic regression
+# Classification using Logistic Regression
 logreg = LR(C = 1)
 logreg = logreg.fit(X_train,y_train)
 prediction = logreg.predict(X_test)
+print("Mean-squared error using Logistic Regression:", mse(y_test, prediction))
 print("Accuracy with Logistic Regression:",accuracy_score(y_test, prediction))
 
-# Since Multi-layer perceptron is senstitive to scaled features, standardize the data first
+# Classification using Multi-layer perceptron 
+ann = MLPClassifier(solver='lbfgs', alpha = 1e-5,
+                    hidden_layer_sizes = (5, 2), random_state = 1)
+ann = ann.fit(X_train, y_train)
+prediction = ann.predict(X_test)
+print("Mean-squared error using Neural networks MLP:", mse(y_test, prediction))
+print("Accuracy with Neural networks MLP:",accuracy_score(y_test, prediction))
+
+# Since Multi-layer perceptron is senstitive to scaled features, let us standardize the data first and then generate model as well.
 from sklearn.preprocessing import StandardScaler  
 scaler = StandardScaler()  
 # Fit only on training data
@@ -111,7 +131,7 @@ ann = MLPClassifier(solver='lbfgs', alpha = 1e-5,
 
 ann = ann.fit(X_train, y_train)
 prediction = ann.predict(X_test)
-print("F1-score using Neural networks MLP:", f1_score(y_test, prediction))
+print("Mean-squared error using Neural networks MLP:", mse(y_test, prediction))
 print("Accuracy with Neural networks MLP:",accuracy_score(y_test, prediction))
 
 plt.show()
