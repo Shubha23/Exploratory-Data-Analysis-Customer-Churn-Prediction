@@ -1,12 +1,12 @@
 # Will-Customer-Churn?
+**NOTE - PLEASE SEE THE WIKI FOR THIS PROJECT (Wiki tab above) FOR SOME EXCITING VISUALIZATION FIGURES!**
 Done - 
 1. Data cleansing, preprocessing, visualization and statistical analysis.
-2. Application of K-means clustering to classify customers into one of the two clusters (churned/not-churned).
-3. Prediction of whether a customer will churn by Logistic Regression, SVM-Linear, SVM-RBF and Random Forest.
+2. Prediction of whether a customer will churn by Logistic Regression, SVM-Linear, SVM-RBF and Random Forest.
 ******************************************
 Project Description -
 ******************************************
-Data source - Kaggle & IBM sample datasets
+Data source - Kaggle & IBM sample dataset community.
 Dataset - Prediction of user behavior to retain customers. The dependent variable have binary value, 1 - churned and 0 - not or true/false. The data set includes information about:
 
 Customers who left within the last month – the column is called Churn
