@@ -1,8 +1,13 @@
 # Will-Customer-Churn?
 **NOTE - PLEASE SEE THE WIKI FOR THIS PROJECT (Wiki tab above) FOR SOME EXCITING VISUALIZATION FIGURES!**
-Done - 
-1. Data cleansing, preprocessing, visualization and statistical analysis.
-2. Prediction of whether a customer will churn by Logistic Regression, SVM-Linear, SVM-RBF and Random Forest.
+
+Project goals -
+1. Data cleansing and preprocessing.
+2. Data visualization and Exploratory Data Analysis
+3. Statistical analysis of the data.
+4. Model generation for prediction of customer churn behavior.
+5. Application of Logistic Regression, SVM-Linear, SVM-RBF and Random Forest algorithms on data and performance comparison.
+
 ******************************************
 Project Description -
 ******************************************
