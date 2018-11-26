@@ -1,4 +1,4 @@
-# Will-Customer-Churn?e
+# Will-Customer-Churne?
 **NOTE - Please see the Jupyter notebook(.ipynb file) for complete explanation and Exploratory Data Analysis (EDA)**
 
 Project goals -
