@@ -1,5 +1,5 @@
-# Will-Customer-Churn?
-**NOTE - PLEASE SEE THE WIKI FOR THIS PROJECT (Wiki tab above) FOR SOME EXCITING VISUALIZATION FIGURES!**
+# Will-Customer-Churn?e
+**NOTE - Please see the Jupyter notebook(.ipynb file) for complete explanation and Exploratory Data Analysis (EDA)**
 
 Project goals -
 1. Data cleansing and preprocessing.
