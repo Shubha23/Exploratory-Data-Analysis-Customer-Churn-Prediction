@@ -1,5 +1,5 @@
-# Will-Customer-Churne?
-**NOTE - Please see the Jupyter notebook(.ipynb file) for complete explanation and Exploratory Data Analysis (EDA)**
+# Will existing customers churn?
+**NOTE - Please see the Jupyter notebook(.ipynb file) for complete explanation and in-depth Exploratory Data Analysis **
 
 Project goals -
 1. Data cleansing and preprocessing.
@@ -25,4 +25,4 @@ To execute - python churn_rate.py
 *Update the file path to local directory before running the file.
 
 
-**************************************************** END OF FILE **********************************************************
+**************************************************** END OF FILE ******************************************************
